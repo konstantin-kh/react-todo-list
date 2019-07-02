@@ -13,27 +13,43 @@ class App extends Component {
   
   componentDidMount() {
     this.fetchTodos()
-      .then((todos) => this.setState({todos}))
+      .then((todos) => this.setState({todos}));
   }
 
   fetchTodos() {
     return fetch('https://jsonplaceholder.typicode.com/todos')
       .then(res => res.json())
-      .then(json => json.slice(0, 5))
+      .then(json => json.slice(0, 5));
   }
 
-  addTaskHandler = () => {
+  getRandomId(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+  }
+
+  addTask = () => {
     const todos = this.state.todos.slice();
+    const lastId = this.getRandomId(this.state.todos.length, this.state.todos.length * 100);
+    
     todos.push({
-        id: 999,
+        id: lastId,
         title: this.state.newTask
-    })
+    });
 
-    this.setState({todos})
+    this.setState({
+      todos,
+      newTask: ''
+    });
   }
 
-  changeInput = (e) => {
-    this.setState({newTask: e.target.value})
+  onRemove = (index) => {
+    const todos = this.state.todos.slice();
+
+    todos.splice(index, 1);
+    this.setState({todos: [...todos]});
+  }
+
+  onChangeInput = (e) => {
+    this.setState({newTask: e.target.value});
   }
 
   render() {
@@ -41,18 +57,22 @@ class App extends Component {
       <div className="App">
         <input 
             value={this.state.newTask}
-            onChange={this.changeInput}
+            onChange={this.onChangeInput}
             type="text"
             placeholder="new task"
         />
-        <button
-            onClick={this.addTaskHandler}
-            className="btn">
+        <button 
+          disabled={!this.state.newTask}
+          onClick={this.addTask}
+          className="btn">
             Add
         </button>
         <ul>
-          {this.state.todos.map((todo)=> 
-            <Item key={todo.id} text={todo.title}/>
+          {this.state.todos.map((todo, index)=> 
+            <Item
+              onRemove={() => this.onRemove(index)}
+              key={todo.id} text={todo.title}
+            />
           )}
         </ul>
       </div>

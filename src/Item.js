@@ -1,7 +1,13 @@
 import React from 'react';
 
 export default function Item (props) {
+	const { text, onRemove  } = props;
 	return (
-		<li>{props.text}</li>
+		<li>
+			{text}
+			<button onClick={onRemove}>
+				Remove
+			</button>
+		</li>
 	)
 }
