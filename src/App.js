@@ -6,7 +6,8 @@ class App extends Component {
   constructor (props){
     super(props)
     this.state = {
-      todos: []
+      todos: [],
+      newTask: ''
     }
   }
   
@@ -21,12 +22,37 @@ class App extends Component {
       .then(json => json.slice(0, 5))
   }
 
+  addTaskHandler = () => {
+    const todos = this.state.todos.slice();
+    todos.push({
+        id: 999,
+        title: this.state.newTask
+    })
+
+    this.setState({todos})
+  }
+
+  changeInput = (e) => {
+    this.setState({newTask: e.target.value})
+  }
+
   render() {
     return (
       <div className="App">
+        <input 
+            value={this.state.newTask}
+            onChange={this.changeInput}
+            type="text"
+            placeholder="new task"
+        />
+        <button
+            onClick={this.addTaskHandler}
+            className="btn">
+            Add
+        </button>
         <ul>
           {this.state.todos.map((todo)=> 
-            <Item text={todo.title}/>
+            <Item key={todo.id} text={todo.title}/>
           )}
         </ul>
       </div>
