@@ -1,7 +1,21 @@
 import React, {Component} from 'react';
-import {List, ListItem, ListItemIcon, ListItemText, Divider, InboxIcon, DraftsIcon} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { List, ListItem, ListItemText, ListItemSecondaryAction, IconButton, Input, Button } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
 import './App.css';
-import Item from './Item'
+// import Item from './Item'
+
+// const useStyles = makeStyles(theme => ({
+//   container: {
+//     display: 'flex',
+//     flexWrap: 'wrap',
+//   },
+//   input: {
+//     margin: theme.spacing(1),
+//   },
+// }));
+
+// const classes = useStyles();
 
 class App extends Component {
   state = {
@@ -53,26 +67,37 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <input 
-            value={this.state.newTask}
-            onChange={this.onChangeInput}
-            type="text"
-            placeholder="new task"
+      <List component="nav">
+        {this.state.todos.map((todo, index) => {
+          return (
+            <ListItem key={todo.id}>
+              <ListItemText primary={todo.title} />
+                <ListItemSecondaryAction>
+                  <IconButton onClick={()=> this.onRemove(index)}
+                     edge="end" aria-label="Delete">
+                    <DeleteIcon />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+          )
+        })}
+      </List>
+     
+        <Input
+          value={this.state.newTask}
+          // className={classes.input}
+          onChange={this.onChangeInput}
+          placeholder="New task"
+          inputProps={{
+            'aria-label': 'Description',
+          }}
         />
-        <button 
+        <Button variant="contained" color="primary" 
           disabled={!this.state.newTask}
           onClick={this.addTask}
-          className="btn">
-            Add
-        </button>
-        <ul>
-          {this.state.todos.map((todo, index)=> 
-            <Item
-              onRemove={() => this.onRemove(index)}
-              key={todo.id} text={todo.title}
-            />
-          )}
-        </ul>
+        >
+            Add task
+        </Button>
       </div>
     );
   }
