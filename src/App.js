@@ -1,16 +1,14 @@
 import React, {Component} from 'react';
+import {List, ListItem, ListItemIcon, ListItemText, Divider, InboxIcon, DraftsIcon} from '@material-ui/core';
 import './App.css';
 import Item from './Item'
 
 class App extends Component {
-  constructor (props){
-    super(props)
-    this.state = {
-      todos: [],
-      newTask: ''
-    }
+  state = {
+    todos: [],
+    newTask: ''
   }
-  
+
   componentDidMount() {
     this.fetchTodos()
       .then((todos) => this.setState({todos}));
