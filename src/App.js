@@ -1,21 +1,8 @@
 import React, {Component} from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { List, ListItem, ListItemText, ListItemSecondaryAction, IconButton, Input, Button } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import './App.css';
 // import Item from './Item'
-
-// const useStyles = makeStyles(theme => ({
-//   container: {
-//     display: 'flex',
-//     flexWrap: 'wrap',
-//   },
-//   input: {
-//     margin: theme.spacing(1),
-//   },
-// }));
-
-// const classes = useStyles();
 
 class App extends Component {
   state = {
@@ -67,37 +54,34 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-      <List component="nav">
-        {this.state.todos.map((todo, index) => {
-          return (
-            <ListItem key={todo.id}>
-              <ListItemText primary={todo.title} />
-                <ListItemSecondaryAction>
-                  <IconButton onClick={()=> this.onRemove(index)}
-                     edge="end" aria-label="Delete">
-                    <DeleteIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-          )
-        })}
-      </List>
-     
         <Input
           value={this.state.newTask}
-          // className={classes.input}
           onChange={this.onChangeInput}
           placeholder="New task"
           inputProps={{
             'aria-label': 'Description',
           }}
         />
-        <Button variant="contained" color="primary" 
+        <Button variant="contained" color="primary"
           disabled={!this.state.newTask}
           onClick={this.addTask}
-        >
-            Add task
+        >Add task
         </Button>
+        <List component="nav">
+          {this.state.todos.map((todo, index) => {
+            return (
+            <ListItem key={todo.id}>
+              <ListItemText primary={todo.title} />
+                <ListItemSecondaryAction>
+                  <IconButton onClick={()=> this.onRemove(index)}
+                    edge="end" aria-label="Delete">
+                    <DeleteIcon />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+            )
+          })}
+        </List>
       </div>
     );
   }
